@@ -1,99 +1,65 @@
-# Linear Models and Multi-output Regression with Scikit-learn
+# Artificial Neural Networks & Multi-Layer Perceptrons (ANN-MLP)
 
-This lab explores **linear models for regression and classification**, including regularization techniques ($L_1$ and $L_2$) and multi-output regression using datasets from `scikit-learn`.
-
----
-
-# Problem 1 — Comparing Linear Regression, Ridge, and LASSO
-
-## Objective
-
-Apply Linear Regression, Ridge, and LASSO on the **Diabetes dataset** to investigate the effect of regularization on predictive performance, coefficient shrinkage, and feature selection.
-
-## Tasks
-
-- Prepare and inspect the Diabetes dataset (distributions and summary statistics).
-- Split the dataset into training and testing sets (70/30 ratio).
-- Train three baseline models:
-  - Ordinary Linear Regression (OLS)
-  - Ridge Regression ($\alpha = 0.1$)
-  - LASSO Regression ($\alpha = 0.1$)
-- Evaluate performance using Mean Squared Error (MSE) on the test set.
-- Compare the number of selected features (non-zero weights) across models.
-- Visualize and compare the learned weights (coefficients) using plots and comparison tables.
-- Experiment with different regularization strengths ($\alpha \in [10^{-3}, 10^2]$) and analyze their impact on prediction error and sparsity.
-
-## Libraries
-
-- `scikit-learn`
-- `pandas`
-- `numpy`
-- `matplotlib`
+This directory contains laboratory coursework on **Linear Models, Multi-Output Regression, and Multi-Layer Perceptron (MLP) Training Dynamics** using Scikit-Learn and PyTorch.
 
 ---
 
-# Problem 2 — Binary Classification with Logistic Regression
+## Sub-Modules Overview
 
-## Objective
-
-Apply Logistic Regression on the **Breast Cancer Wisconsin dataset** to evaluate classification performance, analyze the effect of inverse regularization strength ($C$), and compare $L_1$ versus $L_2$ penalties.
-
-## Tasks
-
-- Load and explore the Breast Cancer dataset (class distributions and feature summaries).
-- Partition the data into training (70%) and testing (30%) sets using stratified sampling.
-- Perform feature scaling using `StandardScaler` (fitted strictly on the training set to prevent data leakage).
-- Train baseline Logistic Regression with $L_2$ penalty ($C = 1.0$) using the `liblinear` solver.
-- Evaluate performance using:
-  - Accuracy
-  - Precision
-  - Recall
-  - F1-score
-  - Classification report and Confusion Matrix
-- Plot the Receiver Operating Characteristic (ROC) curve and compute Area Under the Curve (AUC).
-- Analyze the effect of the regularization strength hyperparameter ($C \in [10^{-3}, 10^2]$) on:
-  - Model accuracy (Train vs. Test to detect underfitting/overfitting)
-  - Number of selected features (non-zero weights)
-  - Regularization paths (weight shrinkage trajectories)
-- Systematically compare $L_1$ versus $L_2$ regularization trade-offs.
-
-## Libraries
-
-- `scikit-learn`
-- `pandas`
-- `numpy`
-- `matplotlib`
+```text
+ANN-MLP/
+├── Linear_Model/                  # Linear, Ridge, LASSO, Logistic & Multi-output
+│   ├── MLP_Programming_HW_EL.pdf
+│   ├── linear_regresion.ipynb
+│   ├── logistic_regression_binary_classification.ipynb
+│   ├── multi-output_regression.ipynb
+│   └── README.md
+│
+└── Training_ANN-Optimizer/        # Optimizers, BatchNorm, Dropout & L2 Regularization
+    ├── ANN_Part2_Programming_HW_EL.pdf
+    ├── Optimization_Algorithm.ipynb
+    ├── Normalization_Regularization_MLP.ipynb
+    └── README.md
+```
 
 ---
 
-# Problem 3 — Multi-tasking with Multi-output Regression
+## Progress and Summary of Labs
 
-## Objective
-
-Apply multi-output regression on the **Linnerud dataset** to model multiple continuous physiological target variables simultaneously from exercise measurements.
-
-## Tasks
-
-- Load the Linnerud dataset and explore Pearson correlations among multiple target variables (`Weight`, `Waist`, `Pulse`).
-- Split the dataset into training (70%) and testing (30%) sets, followed by feature standardization.
-- Train multi-output regression models using:
-  - Multi-output Linear Regression (`MultiOutputRegressor(LinearRegression())`)
-  - Multi-output Ridge Regression (`MultiOutputRegressor(Ridge(alpha=1.0))`)
-- Evaluate performance individually for each target variable using $R^2$ score, RMSE, and MAE.
-- Compare multi-output regression results against training individual models for each target variable separately, verifying theoretical equivalence.
-- Visualize predicted versus actual values using scatter plots with identity reference lines ($y = x$).
-
-## Libraries
-
-- `scikit-learn`
-- `pandas`
-- `numpy`
-- `matplotlib`
+| Module | Problem | Notebook | Dataset | Key Techniques | Status |
+| :--- | :---: | :--- | :--- | :--- | :---: |
+| **Linear Models** | **1** | [`linear_regresion.ipynb`](./Linear_Model/linear_regresion.ipynb) | Diabetes (442 samples, 10 features) | OLS, Ridge ($L_2$), LASSO ($L_1$), Alpha sweep | `Completed` |
+| **Linear Models** | **2** | [`logistic_regression_binary_classification.ipynb`](./Linear_Model/logistic_regression_binary_classification.ipynb) | Breast Cancer (569 samples, 30 features) | Logistic Regression, $L_1$ vs $L_2$, ROC-AUC, $C$ sweep | `Completed` |
+| **Linear Models** | **3** | [`multi-output_regression.ipynb`](./Linear_Model/multi-output_regression.ipynb) | Linnerud (20 samples, 3 targets) | `MultiOutputRegressor`, Decoupled OLS, Ridge | `Completed` |
+| **ANN Optimizers** | **1** | [`Optimization_Algorithm.ipynb`](./Training_ANN-Optimizer/Optimization_Algorithm.ipynb) | Breast Cancer (569 samples, 30 features) | SGD, Momentum, Adam, AdamW, Cosine Annealing | `Completed` |
+| **ANN Optimizers** | **2** | [`Normalization_Regularization_MLP.ipynb`](./Training_ANN-Optimizer/Normalization_Regularization_MLP.ipynb) | Digits (1,797 samples, 10 classes) | BatchNorm, Dropout, $L_2$ Decay, Combined Network | `Completed` |
 
 ---
 
-# References
+## Module Details
 
-- [Scikit-learn Generalized Linear Models](https://scikit-learn.org/stable/modules/linear_model.html)
-- [Scikit-learn Multi-output Regressor Documentation](https://scikit-learn.org/stable/modules/generated/sklearn.multioutput.MultiOutputRegressor.html)
+### 1. [Linear Models & Multi-Output Regression](./Linear_Model/)
+- **Specification**: [`MLP_Programming_HW_EL.pdf`](./Linear_Model/MLP_Programming_HW_EL.pdf)
+- **Topics**:
+  - Regularization trade-offs: $L_2$ parameter shrinkage vs. $L_1$ feature sparsity.
+  - Multicollinearity resolution in physiological data.
+  - Probability calibration and ROC discrimination in binary cancer classification.
+  - Multi-task regression and mathematical decoupling of Frobenius norm objectives.
+
+### 2. [Neural Network Training, Optimization & Regularization](./Training_ANN-Optimizer/)
+- **Specification**: [`ANN_Part2_Programming_HW_EL.pdf`](./Training_ANN-Optimizer/ANN_Part2_Programming_HW_EL.pdf)
+- **Topics**:
+  - Convergence acceleration: First-order SGD vs. Momentum vs. Adam vs. AdamW.
+  - Decoupled weight decay dynamics for adaptive optimizers.
+  - Learning rate decay: Constant schedule vs. Cosine Annealing.
+  - Internal covariate shift stabilization via Batch Normalization (`nn.BatchNorm1d`).
+  - Co-adaptation mitigation via Dropout ($p = 0.3$).
+  - Overfitting reduction and generalization gap analysis.
+
+---
+
+## References
+
+- [Scikit-learn Documentation](https://scikit-learn.org/)
+- [PyTorch Documentation](https://pytorch.org/)
 - Course Lecture Slides: `3. LinearRegression.pdf`, `LogisticRegression.pdf`, `MLP.pdf`
