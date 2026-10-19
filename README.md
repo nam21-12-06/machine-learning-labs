@@ -154,9 +154,6 @@ Machine-Learning-Labs/
 │   │
 │   └── README.md                                       # ANN-MLP module hub documentation
 │
-├── agents/
-│   └── rules.md                                        # Working principles and development guidelines
-│
 ├── requirements.txt                                    # Python environment dependencies
 └── README.md                                           # Root repository hub documentation
 ```
