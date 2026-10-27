@@ -1,23 +1,65 @@
-# Environments
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Virtual Environments
 .env/
 .venv/
 env/
 venv/
 ENV/
+env.bak/
+venv.bak/
 
-# Jupyter Notebook
+# Jupyter Notebook checkpoints & cache
 .ipynb_checkpoints/
+*/.ipynb_checkpoints/*
 
-# Python
-__pycache__/
-*.py[cod]
-*$py.class
+# IPython
+.ipython/
+profile_default/
+ipython_config.py
+
+# Data caches & large dataset downloads
+scikit_learn_data/
+*.tar.gz
+*.tar
+*.gz
+*.zip
+*.pkz
+
+# Model weights & checkpoints
+*.pt
+*.pth
+*.h5
+*.ckpt
+*.onnx
+
+# IDEs & Code Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.pydevproject
+.settings/
 
 # OS generated files
 .DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
 Thumbs.db
+desktop.ini
 
-# IDEs
-.vscode/
-.idea/
-.gemini/
+# Logs & Temporary files
+*.log
+*.tmp
+temp/
+tmp/
+
