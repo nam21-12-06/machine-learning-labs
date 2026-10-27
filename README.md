@@ -41,6 +41,7 @@ This repository serves as a comprehensive **Machine Learning Hub**. Each topic c
 | **01** | [**Decision Tree**](./Decision_Tree/)                              | [`DT_Classification.ipynb`](./Decision_Tree/DT_Classification.ipynb)<br>[`DT_Regression.ipynb`](./Decision_Tree/DT_Regression.ipynb)                                                                                                                                                                | Iris<br>Diabetes                          | ID3 (Entropy), Gini (CART), Log-Loss, Pruning, From-scratch implementation, `SimpleImputer` | `Completed` |
 | **02** | [**Linear Models & Regression**](./ANN-MLP/Linear_Model/)          | [`linear_regresion.ipynb`](./ANN-MLP/Linear_Model/linear_regresion.ipynb)<br>[`logistic_regression_binary_classification.ipynb`](./ANN-MLP/Linear_Model/logistic_regression_binary_classification.ipynb)<br>[`multi-output_regression.ipynb`](./ANN-MLP/Linear_Model/multi-output_regression.ipynb) | Diabetes<br>Breast Cancer<br>Linnerud     | OLS, Ridge ($L_2$), LASSO ($L_1$), Logistic Regression, ROC-AUC, `MultiOutputRegressor`     | `Completed` |
 | **03** | [**ANN Optimizers & Training**](./ANN-MLP/Training_ANN-Optimizer/) | [`Optimization_Algorithm.ipynb`](./ANN-MLP/Training_ANN-Optimizer/Optimization_Algorithm.ipynb)<br>[`Normalization_Regularization_MLP.ipynb`](./ANN-MLP/Training_ANN-Optimizer/Normalization_Regularization_MLP.ipynb)                                                                              | Breast Cancer<br>Digits (Handwritten 0-9) | SGD, Momentum, Adam, AdamW, Cosine Annealing, Batch Normalization, Dropout, L2 Decay        | `Completed` |
+| **04** | [**Bayesian Learning**](./Bayesian/)                               | [`MLE-MAP_in_Linear_Regression.ipynb`](./Bayesian/MLE-MAP_in_Linear_Regression.ipynb)<br>[`Bayesian_Classification_Naive_Bayes.ipynb`](./Bayesian/Bayesian_Classification_Naive_Bayes.ipynb)                                                                                                          | Synthetic Gaussian ($N=100$)<br>20 Newsgroups (1,977 articles) | MLE (OLS), MAP (Ridge), $\alpha = \frac{\sigma^2}{\tau^2}$, Naive Bayes (Gaussian, Multinomial, Bernoulli, Complement), TF-IDF, Laplace Smoothing | `Completed` |
 
 ---
 
@@ -127,6 +128,33 @@ This repository serves as a comprehensive **Machine Learning Hub**. Each topic c
 
 ---
 
+### Module 4 — Bayesian Learning
+
+<details open>
+<summary><b>Click to expand Module 4 details</b></summary>
+
+**Folder**: [`Bayesian/`](./Bayesian/) | **Specification**: [`BayesianLearning_Programming_HW_EL.pdf`](./Bayesian/BayesianLearning_Programming_HW_EL.pdf) | **Documentation**: [`README.md`](./Bayesian/README.md)
+
+- **Problem 1 — Comparing MLE vs. MAP in Linear Regression** ([`MLE-MAP_in_Linear_Regression.ipynb`](./Bayesian/MLE-MAP_in_Linear_Regression.ipynb))
+  - **Dataset**: Synthetic Gaussian linear dataset ($N=100$, true relationship $y = 2X + 1 + \epsilon$ with $\epsilon \sim \mathcal{N}(0, 0.5)$).
+  - **Paradigms**: Frequentist Maximum Likelihood Estimation (MLE via Ordinary Least Squares) vs. Bayesian Maximum A Posteriori (MAP via Ridge Regression).
+  - **Core Theoretical Link**: Mathematical proof showing that MAP estimation under a zero-mean Gaussian weight prior $w \sim \mathcal{N}(0, \tau^2)$ and Gaussian noise $\epsilon \sim \mathcal{N}(0, \sigma^2)$ is identical to Ridge regression with regularization strength:
+    $$\alpha = \frac{\sigma^2}{\tau^2}$$
+  - **Highlights**: Hyperparameter sweep across $\alpha \in [0.1, 1.0, 10.0, 100.0]$, weight shrinkage trajectories, and robustness evaluation under 5% extreme noise contamination.
+  - **Best Metric**: MLE achieves $\text{Test MSE} = 0.4269$ ($\hat{w} = 1.8872$, $\hat{b} = 1.0657$); Ridge with $\alpha = 0.1$ closely matches with $\text{Test MSE} = 0.4271$.
+
+- **Problem 2 — Bayesian Classification and Naive Bayes** ([`Bayesian_Classification_Naive_Bayes.ipynb`](./Bayesian/Bayesian_Classification_Naive_Bayes.ipynb))
+  - **Dataset**: 20 Newsgroups (`sci.med` vs. `sci.space`, $N=1,977$ articles, 80/20 train/test split: $n_{\text{train}} = 1,581, n_{\text{test}} = 396$).
+  - **Feature Extraction**: `TfidfVectorizer(max_features=5000, stop_words='english')` yielding sparse term-frequency inverse-document matrices (>98.5% sparsity).
+  - **Bayesian Architectures**: Comparative evaluation of GaussianNB, MultinomialNB, BernoulliNB, and ComplementNB with inference latency profiling.
+  - **Laplace Smoothing Sweep**: Log-scale exploration of additive smoothing parameter $\alpha \in [10^{-4}, 10.0]$ to combat the Zero-Probability dilemma.
+  - **Feature Attribution**: Extraction of top category-discriminative vocabulary using Log-Likelihood Ratio (LLR) and Bayes' theorem.
+  - **Best Metric**: BernoulliNB achieves top $\text{Test Accuracy} = 98.74\%$ and $\text{F1} = 0.9874$; ComplementNB delivers ultra-low inference latency ($0.72\text{ ms}$).
+
+</details>
+
+---
+
 ## Directory Structure
 
 ```text
@@ -153,6 +181,15 @@ Machine-Learning-Labs/
 │   │   └── README.md                                   # ANN Optimizers module documentation
 │   │
 │   └── README.md                                       # ANN-MLP module hub documentation
+│
+├── Bayesian/
+│   ├── BayesianLearning_Programming_HW_EL.pdf          # Problem specification
+│   ├── MLE-MAP_in_Linear_Regression.ipynb              # Problem 1: Comparing MLE vs MAP in Linear Regression
+│   ├── Bayesian_Classification_Naive_Bayes.ipynb       # Problem 2: Bayesian Classification and Naive Bayes
+│   └── README.md                                       # Bayesian Learning module documentation
+│
+├── agents/
+│   └── rules.md                                        # Working principles and development guidelines
 │
 ├── requirements.txt                                    # Python environment dependencies
 └── README.md                                           # Root repository hub documentation
@@ -210,7 +247,11 @@ jupyter notebook
   - `3. LinearRegression.pdf`
   - `LogisticRegression.pdf`
   - `MLP.pdf`
-- **Book Reference**: _Hands-On Machine Learning with Scikit-Learn, Keras, and TensorFlow_ by Aurélien Géron.
+  - `BayesianLearning.pdf`
+- **Book References**:
+  - _Hands-On Machine Learning with Scikit-Learn, Keras, and TensorFlow_ by Aurélien Géron.
+  - _Pattern Recognition and Machine Learning_ by Christopher M. Bishop.
+  - _Machine Learning: A Probabilistic Perspective_ by Kevin P. Murphy.
 
 ---
 
