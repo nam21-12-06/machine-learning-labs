@@ -8,7 +8,7 @@ This module explores **Bayesian principles, probabilistic parameter estimation, 
 
 | Problem | Notebook | Dataset | Key Techniques | Status |
 | :---: | :--- | :--- | :--- | :---: |
-| **1** | [`MLE-MAP_in_Linear_Regression.ipynb`](./MLE-MAP_in_Linear_Regression.ipynb) | Synthetic Gaussian Data ($N=100$) | MLE (OLS), MAP (Ridge), $\alpha = \frac{\sigma^2}{\tau^2}$, Outlier Robustness | `Completed` |
+| **1** | [`MLE-MAP_in_Linear_Regression.ipynb`](./MLE-MAP_in_Linear_Regression.ipynb) | Synthetic Gaussian Data ($N=100$) | MLE (OLS), MAP (Ridge), MAP-Ridge Equivalence ($\alpha = \sigma^2/\tau^2$), Outlier Robustness | `Completed` |
 | **2** | [`Bayesian_Classification_Naive_Bayes.ipynb`](./Bayesian_Classification_Naive_Bayes.ipynb) | 20 Newsgroups (`sci.med` vs `sci.space`) | GaussianNB, MultinomialNB, BernoulliNB, ComplementNB, TF-IDF, Laplace Smoothing | `Completed` |
 
 ---
@@ -44,7 +44,7 @@ $$
 | Method | Regularization ($\alpha$) | Estimated Slope ($w$) | Intercept ($b$) | Test MSE | Shrinkage vs. MLE |
 | :--- | :---: | :---: | :---: | :---: | :---: |
 | **True Model** | - | 2.0000 | 1.0000 | - | - |
-| **MLE (LinearRegression)** | None ($\tau^2 \to \infty$) | 1.8872 | 1.0657 | **0.4269** | 0.00% |
+| **MLE (LinearRegression)** | None (Flat prior) | 1.8872 | 1.0657 | **0.4269** | 0.00% |
 | **MAP (Ridge $\alpha=0.1$)** | 0.1 | 1.8843 | 1.0653 | 0.4271 | 0.15% |
 | **MAP (Ridge $\alpha=1.0$)** | 1.0 | 1.8586 | 1.0620 | 0.4289 | 1.52% |
 | **MAP (Ridge $\alpha=10.0$)** | 10.0 | 1.6356 | 1.0336 | 0.4754 | 13.33% |
