@@ -47,6 +47,7 @@ This repository serves as a comprehensive **Machine Learning Hub**. Each topic c
 | **04** | [**Bayesian Learning**](./Bayesian/)                               | [`MLE-MAP_in_Linear_Regression.ipynb`](./Bayesian/MLE-MAP_in_Linear_Regression.ipynb)<br>[`Bayesian_Classification_Naive_Bayes.ipynb`](./Bayesian/Bayesian_Classification_Naive_Bayes.ipynb)                                                                                                          | Synthetic Gaussian ($N=100$)<br>20 Newsgroups (1,977 articles) | MLE (OLS), MAP (Ridge), MAP-Ridge Equivalence ($\alpha = \sigma^2/\tau^2$), Naive Bayes (Gaussian, Multinomial, Bernoulli, Complement), TF-IDF, Laplace Smoothing | `Completed` |
 | **05** | [**Genetic Algorithms**](./GA/) | [`GA_Structure_Reproduction_Operators.ipynb`](./GA/GA_Structure_Reproduction_Operators.ipynb)<br>[`GA_Rule_Representation_Hyperparameter_Optimization.ipynb`](./GA/GA_Rule_Representation_Hyperparameter_Optimization.ipynb) | OneMax Bit-String ($L=20$, $p=50$)<br>Synthetic Rule Classification ($N=120$) | Roulette Wheel Selection, Single/Two-point/Uniform Crossover, Bit Mutation, GABIL Rule Induction, Modulo-8 Offset-Aligned Crossover | `Completed` |
 | **06** | [**Bayesian Networks**](./Bayesian_Network/) | [`Bayesian_Network_Inference.ipynb`](./Bayesian_Network/Bayesian_Network_Inference.ipynb)<br>[`Text_Classification_Naive_Bayes.ipynb`](./Bayesian_Network/Text_Classification_Naive_Bayes.ipynb) | Medical Pulmonary Diagnosis ($S, L, C, X$)<br>SMS Spam Collection (5,572 messages) | DAG Topology, Factorization, Variable Elimination, Belief Propagation, From-scratch Naive Bayes, Laplace Smoothing, 8 NLP Pipelines, LLR | `Completed` |
+| **07** | [**Support Vector Machines**](./SVM/) | [`Linear_vs_Nonlinear_SVM.ipynb`](./SVM/Linear_vs_Nonlinear_SVM.ipynb)<br>[`Study_SVM_Parameters.ipynb`](./SVM/Study_SVM_Parameters.ipynb) | Synthetic 2D ($N=500$)<br>Iris Binary ($N=100$)<br>Overlapping Blobs ($N=300$) | Maximum Margin, Primal/Dual, KKT Conditions, Kernel Trick, Margin Width ($2/\Vert\mathbf{w}\Vert_2$), Parameter Sweeps ($C, \gamma$), Hard vs. Soft Margin, `GridSearchCV` | `Completed` |
 
 ---
 
@@ -218,6 +219,35 @@ This repository serves as a comprehensive **Machine Learning Hub**. Each topic c
 
 ---
 
+### Module 7 — Support Vector Machines (SVM)
+
+<details open>
+<summary><b>Click to expand Module 7 details</b></summary>
+
+**Folder**: [`SVM/`](./SVM/) | **Specification**: [`SVM_Lab.pdf`](./SVM/SVM_Lab.pdf) | **Documentation**: [`README.md`](./SVM/README.md)
+
+- **Problem 1 — Comparison of Linear and Non-linear SVM** ([`Linear_vs_Nonlinear_SVM.ipynb`](./SVM/Linear_vs_Nonlinear_SVM.ipynb))
+  - **Datasets & Preprocessing**: 2D Synthetic dataset (`make_classification`, $N=500$ samples, 2 classes) and real-world benchmark (Fisher's Iris dataset: Versicolor vs. Virginica on petal length and petal width, $N=100$ samples). Standardized via `StandardScaler` under a strict zero-leakage 70/30 stratified train/test split.
+  - **4 Model Architectures**: Evaluated `LinearSVC` (primal coordinate descent via LIBLINEAR), `SVC(kernel='linear')`, `SVC(kernel='rbf')`, `SVC(kernel='poly', degree=3)`, and `SVC(kernel='sigmoid')`.
+  - **Benchmark Performance**: RBF kernel achieves top generalization accuracy across both testbeds (**94.67%** on Synthetic, **90.00%** on Iris); Linear models achieve **88.67% - 92.00%** on Synthetic and **86.67%** on Iris; Polynomial ($d=3$) achieves **83.33%** and **76.67%**.
+  - **Support Vector Sparsity**: RBF requires only **28.86%** active support vectors on Synthetic ($101/350$) and **21.43%** on Iris ($15/70$). `LinearSVC` discards all support vectors post-training, enabling $\mathcal{O}(D)$ microsecond inference.
+  - **5 Embedded High-DPI Visualizations**: Figure 1 (EDA and feature distributions), Figure 2 (Synthetic decision boundaries, margins $f(\mathbf{x})=\pm 1$, and support vectors), Figure 3 (Iris decision boundaries and margins), Figure 4 (Multi-metric comparative diagnostics, SV counts, latency, and ROC curves), and Figure 5 (3D geometric intuition of the kernel trick mapping 2D non-separable concentric data to a linearly separable 3D space).
+  - **Scenario-Based Engineering Guidelines**: Comprehensive guide mapping data regimes ($D \gg N$, non-linear tabular, edge low-latency, and polynomial dynamics) to optimal kernel selection.
+  - **Best Metric**: RBF Kernel (`SVC(kernel='rbf')`) achieves Test Accuracy = 94.67% (Synthetic) and 90.00% (Iris) with 28.86% support vector sparsity.
+
+- **Problem 2 — Study on the Effect of SVM Parameters** ([`Study_SVM_Parameters.ipynb`](./SVM/Study_SVM_Parameters.ipynb))
+  - **Datasets & Hyperparameter Sweeps**: Standardized 2D synthetic dataset ($N=500$) and noisy overlapping isotropic Gaussian clusters (`make_blobs`, $N=300$, `cluster_std=1.5`).
+  - **Regularization Parameter $C$ Analysis**: Evaluated $C \in [0.001, 1000]$. Geometric margin width contracts from $8.185$ to $0.795$ ($>10\times$ contraction) and support vector count decreases from $348$ down to $112$ ($99.4\%$ down to $32.0\%$ sparsity). Rigorously quantifies the transition from high-bias underfitting ($C \le 0.01$) to the optimal margin-penalty trade-off ($C \in [1, 10]$).
+  - **RBF Kernel Parameter $\gamma$ Dynamics**: Evaluated $\gamma \in [0.001, 100]$ corresponding to Gaussian influence radii $\sigma \in [22.36, 0.07]$. Demonstrates smooth linear underfitting for small $\gamma$, an optimal generalization sweet spot at $\gamma^* = 1.0$ (95.33% accuracy, 94 SVs), and severe island overfitting for $\gamma \ge 10.0$ (Train accuracy 99.14%, 252 SVs).
+  - **Hard vs. Soft Margin on Overlapping Noise**: Under cluster overlap, soft-margin ($C=1$) preserves a wider geometric margin ($0.849$ vs. $0.765$) and tolerates 46 margin penetrations without boundary distortion, whereas hard-margin ($C=1000$) forces margin shrinkage and exhibits high boundary rigidity.
+  - **GridSearchCV Hyperparameter Optimization**: Exhaustive 5-fold cross-validation over $(C, \gamma)$ discovers optimal configuration ($C^*=10, \gamma^*=10$), improving cross-validation accuracy to $97.43\%$ and test accuracy to $96.67\%$ (F1-score $96.77\%$).
+  - **6 Embedded High-DPI Visualizations**: Figure 1 (3-panel curves: Accuracy, Margin Width, and SVs vs. $\log_{10}(C)$), Figure 2 (4-panel visual decision boundaries across $C$), Figure 3 (6-panel RBF boundary complexity progression across $\gamma$), Figure 4 (Validation curve for $\gamma$ with $\pm 1\sigma$ bands), Figure 5 (Soft vs. hard margin on noisy blobs highlighting slack violations), and Figure 6 (2D GridSearchCV heatmap and bias-variance learning curve).
+  - **Best Metric**: Optimized RBF via `GridSearchCV` ($C^*=10.0, \gamma^*=10.0$) achieves 97.43% 5-Fold CV Accuracy, 96.67% Test Accuracy, and 96.77% Test F1-Score.
+
+</details>
+
+---
+
 ## Directory Structure
 
 ```text
@@ -261,6 +291,12 @@ Machine-Learning-Labs/
 │   ├── Text_Classification_Naive_Bayes.ipynb                       # Problem 2: Text Classification with Scratch & Scikit-Learn Naive Bayes
 │   ├── spam.csv                                                    # SMS Spam Collection dataset (5,572 messages)
 │   └── README.md                                                   # Bayesian Networks module documentation
+│
+├── SVM/
+│   ├── SVM_Lab.pdf                                                 # Problem specification
+│   ├── Linear_vs_Nonlinear_SVM.ipynb                               # Problem 1: Comparison of Linear and Non-linear SVM
+│   ├── Study_SVM_Parameters.ipynb                                  # Problem 2: Study on the Effect of SVM Parameters
+│   └── README.md                                                   # Support Vector Machines module documentation
 │
 ├── agents/
 │   └── rules.md                                                    # Working principles and development guidelines
@@ -324,6 +360,7 @@ jupyter notebook
   - `BayesianLearning.pdf`
   - `GA.pdf`
   - `Bayesian_Network_HW_EL.pdf`
+  - `SVM_Lab.pdf`
   - `1.BayesNet - Intro.pdf`
   - `5.NaiveBayes.pdf`
 - **Book References**:
@@ -334,6 +371,8 @@ jupyter notebook
   - _Genetic Algorithms in Search, Optimization, and Machine Learning_ by David E. Goldberg.
   - _Probabilistic Graphical Models: Principles and Techniques_ by Daphne Koller and Nir Friedman.
   - _Probabilistic Reasoning in Intelligent Systems_ by Judea Pearl.
+  - _Statistical Learning Theory_ by Vladimir N. Vapnik.
+  - _Learning with Kernels_ by Bernhard Schölkopf and Alexander J. Smola.
 
 ---
 
