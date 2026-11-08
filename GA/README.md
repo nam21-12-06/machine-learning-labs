@@ -47,7 +47,7 @@ Global optimum: $h^* = (1, 1, \dots, 1)$ with maximum fitness $\text{Fitness}(h^
 ## Benchmark Results ($N = 30$ Independent Monte Carlo Trials)
 
 | Crossover Operator | Success Rate (%) | Avg Convergence Gen | Min Conv Gen | Max Conv Gen | Mean Final Max Fitness | Mean Final Avg Fitness | Total Runtime (s) |
-| :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
 | **Single-point Crossover** | 86.7% | 53.03 +/- 30.40 | 17 | 100 | 19.87 +/- 0.34 | 18.24 +/- 0.62 | 8.237 |
 | **Two-point Crossover** | **100.0%** | **34.20 +/- 16.82** | **14** | **82** | **20.00 +/- 0.00** | **18.78 +/- 0.44** | **1.520** |
 | **Uniform Crossover** | 96.7% | 37.43 +/- 22.86 | 15 | 100 | 19.97 +/- 0.18 | 18.65 +/- 0.51 | 2.092 |

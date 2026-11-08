@@ -4,3 +4,6 @@ matplotlib
 scikit-learn
 torch
 jupyter
+pgmpy
+networkx
+nltk

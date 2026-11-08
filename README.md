@@ -23,6 +23,9 @@
 ![Pandas](https://img.shields.io/badge/Pandas-2.2+-150458?style=flat-square)
 ![Matplotlib](https://img.shields.io/badge/Matplotlib-3.8+-11557c?style=flat-square)
 ![Jupyter](https://img.shields.io/badge/Jupyter-Lab%20%2F%20Notebook-F37626?style=flat-square)
+![pgmpy](https://img.shields.io/badge/pgmpy-0.1.25+-007ACC?style=flat-square)
+![NetworkX](https://img.shields.io/badge/NetworkX-3.2+-2B7A78?style=flat-square)
+![NLTK](https://img.shields.io/badge/NLTK-3.8+-1B4965?style=flat-square)
 
 </div>
 
@@ -43,6 +46,7 @@ This repository serves as a comprehensive **Machine Learning Hub**. Each topic c
 | **03** | [**ANN Optimizers & Training**](./ANN-MLP/Training_ANN-Optimizer/) | [`Optimization_Algorithm.ipynb`](./ANN-MLP/Training_ANN-Optimizer/Optimization_Algorithm.ipynb)<br>[`Normalization_Regularization_MLP.ipynb`](./ANN-MLP/Training_ANN-Optimizer/Normalization_Regularization_MLP.ipynb)                                                                              | Breast Cancer<br>Digits (Handwritten 0-9) | SGD, Momentum, Adam, AdamW, Cosine Annealing, Batch Normalization, Dropout, L2 Decay        | `Completed` |
 | **04** | [**Bayesian Learning**](./Bayesian/)                               | [`MLE-MAP_in_Linear_Regression.ipynb`](./Bayesian/MLE-MAP_in_Linear_Regression.ipynb)<br>[`Bayesian_Classification_Naive_Bayes.ipynb`](./Bayesian/Bayesian_Classification_Naive_Bayes.ipynb)                                                                                                          | Synthetic Gaussian ($N=100$)<br>20 Newsgroups (1,977 articles) | MLE (OLS), MAP (Ridge), MAP-Ridge Equivalence ($\alpha = \sigma^2/\tau^2$), Naive Bayes (Gaussian, Multinomial, Bernoulli, Complement), TF-IDF, Laplace Smoothing | `Completed` |
 | **05** | [**Genetic Algorithms**](./GA/) | [`GA_Structure_Reproduction_Operators.ipynb`](./GA/GA_Structure_Reproduction_Operators.ipynb)<br>[`GA_Rule_Representation_Hyperparameter_Optimization.ipynb`](./GA/GA_Rule_Representation_Hyperparameter_Optimization.ipynb) | OneMax Bit-String ($L=20$, $p=50$)<br>Synthetic Rule Classification ($N=120$) | Roulette Wheel Selection, Single/Two-point/Uniform Crossover, Bit Mutation, GABIL Rule Induction, Modulo-8 Offset-Aligned Crossover | `Completed` |
+| **06** | [**Bayesian Networks**](./Bayesian_Network/) | [`Bayesian_Network_Inference.ipynb`](./Bayesian_Network/Bayesian_Network_Inference.ipynb)<br>[`Text_Classification_Naive_Bayes.ipynb`](./Bayesian_Network/Text_Classification_Naive_Bayes.ipynb) | Medical Pulmonary Diagnosis ($S, L, C, X$)<br>SMS Spam Collection (5,572 messages) | DAG Topology, Factorization, Variable Elimination, Belief Propagation, From-scratch Naive Bayes, Laplace Smoothing, 8 NLP Pipelines, LLR | `Completed` |
 
 ---
 
@@ -182,6 +186,38 @@ This repository serves as a comprehensive **Machine Learning Hub**. Each topic c
 
 ---
 
+### Module 6 — Bayesian Networks & Probabilistic Graphical Models
+
+<details open>
+<summary><b>Click to expand Module 6 details</b></summary>
+
+**Folder**: [`Bayesian_Network/`](./Bayesian_Network/) | **Specification**: [`Bayesian_Network_HW_EL.pdf`](./Bayesian_Network/Bayesian_Network_HW_EL.pdf) | **Documentation**: [`README.md`](./Bayesian_Network/README.md)
+
+- **Problem 1 — Implementing Inference in Bayesian Networks** ([`Bayesian_Network_Inference.ipynb`](./Bayesian_Network/Bayesian_Network_Inference.ipynb))
+  - **Problem Domain**: Medical pulmonary diagnostic reasoning across four clinical variables: $\text{Smoking} \in \{0, 1\}$, $\text{LungCancer} \in \{0, 1\}$, $\text{Cough} \in \{0, 1\}$, and $\text{XRay} \in \{0, 1\}$.
+  - **Network Topology & Factorization**: Directed Acyclic Graph encoding local Markov properties with joint factorization: $P(S, L, C, X) = P(S) \cdot P(L \mid S) \cdot P(C \mid L, S) \cdot P(X \mid L)$.
+  - **Multi-Paradigm Probabilistic Inference**:
+    - **Causal (Predictive)**: $P(\text{Cough}=\text{Yes} \mid \text{Smoking}=\text{Yes}) = 44.00\%$ (vs. $10.42\%$ non-smokers; $+33.58\%$ risk gain).
+    - **Diagnostic (Explanatory)**: $P(\text{Smoking}=\text{Yes} \mid \text{XRay}=\text{Abnormal}) = 49.72\%$ (up from $30.00\%$ prior; $+19.72\%$ abductive shift).
+    - **Intercausal (Explaining Away)**: $P(\text{LungCancer}=\text{Yes} \mid \text{Cough}=\text{Yes}, \text{XRay}=\text{Abnormal}) = 74.58\%$ (synergistic leap from $3.70\%$ prior).
+  - **Exact Mathematical Validation**: Full 16-state joint probability enumeration proving machine-precision equivalence between manual marginalization and algorithmic Variable Elimination ($\Delta < 10^{-15}$).
+  - **Clinical Visualization**: High-resolution NetworkX DAG architecture diagram and 4-panel diagnostic reasoning dashboard.
+
+- **Problem 2 — Text Classification with Naive Bayes** ([`Text_Classification_Naive_Bayes.ipynb`](./Bayesian_Network/Text_Classification_Naive_Bayes.ipynb))
+  - **Problem Domain**: SMS Spam detection on Kaggle SMS Spam Collection ($N = 5,572$ messages: 4,825 Ham, 747 Spam; 80/20 stratified split into 4,457 train and 1,115 test samples).
+  - **From-scratch Implementation**: Multinomial Naive Bayes classifier built from scratch in NumPy (`ScratchMultinomialNB`) with pure-Python tokenization/vocabulary builder (`ScratchTextPreprocessor`), MLE priors, Laplace smoothing ($\alpha = 1.0$), and vectorized log-space inference with Log-Sum-Exp normalization.
+  - **Scikit-Learn Head-to-Head Benchmark**: Identical 100.00% prediction match across all 1,115 test samples (Accuracy: 98.74%, Precision: 98.56%, Recall: 91.95%, F1-Score: 95.14%; 0 divergent classifications; $4.9\times$ faster CPU training).
+  - **8 NLP Preprocessing Pipelines**: Evaluated Count-based BoW vs. Normalized TF-IDF combined with stopword removal, Porter stemming, and WordNet lemmatization. BoW yields peak balanced detection ($F_1 = 95.14\%$); TF-IDF delivers **100.00% Precision** (0 false alarms out of 966 test Ham messages).
+  - **Vocabulary Scaling Sensitivity**: Benchmarked capacity constraints $\vert V \vert \in [50, 7668]$; performance saturates at $\vert V \vert = 2,000$ (98.74% accuracy, 95.17% F1), reducing memory footprint by 73.91% with zero predictive loss.
+  - **Lexical Feature Attribution**: Ranked most discriminative tokens using Log-Likelihood Ratios ($\text{LLR}(w) = \ln \frac{P(w \mid \text{Spam})}{P(w \mid \text{Ham})}$); top Spam tokens: `claim` (+5.73), `prize` (+5.39), `150p` (+5.18); top Ham tokens: `gt` (-4.39), `lt` (-4.38), `he` (-4.00), `da` (-3.74).
+  - **Local Prediction Explainability**: Interactive inspector (`explain_message_prediction`) decomposing messages into token-level log-odds contributions $\Delta \text{Log-Odds}(w) = \text{LLR}(w)$, verified on 4 real-world test communications.
+  - **5 Embedded High-DPI Visualizations**: Figure 1 (EDA Dashboard), Figure 2 (Confusion Matrix Heatmap & ROC/PR Curves), Figure 3 (4-panel NLP Diagnostics), Figure 4 (Vocabulary Scaling Trajectories), and Figure 5 (LLR Dual Bar Charts).
+  - **Best Metric**: BoW + Scratch / Scikit-Learn MultinomialNB achieves Test Accuracy = 98.74% and F1-Score = 95.14%; TF-IDF variants achieve 100.00% Precision.
+
+</details>
+
+---
+
 ## Directory Structure
 
 ```text
@@ -218,6 +254,13 @@ Machine-Learning-Labs/
 │   ├── GA_Structure_Reproduction_Operators.ipynb                   # Problem 1: GA Structure and Reproduction Operators
 │   ├── GA_Rule_Representation_Hyperparameter_Optimization.ipynb    # Problem 2: GA Rule Representation and Hyperparameters
 │   └── README.md                                                   # Genetic Algorithms module documentation
+│
+├── Bayesian_Network/
+│   ├── Bayesian_Network_HW_EL.pdf                                  # Problem specification
+│   ├── Bayesian_Network_Inference.ipynb                            # Problem 1: Bayesian Network Inference (Causal, Diagnostic, Intercausal)
+│   ├── Text_Classification_Naive_Bayes.ipynb                       # Problem 2: Text Classification with Scratch & Scikit-Learn Naive Bayes
+│   ├── spam.csv                                                    # SMS Spam Collection dataset (5,572 messages)
+│   └── README.md                                                   # Bayesian Networks module documentation
 │
 ├── agents/
 │   └── rules.md                                                    # Working principles and development guidelines
@@ -280,12 +323,17 @@ jupyter notebook
   - `MLP.pdf`
   - `BayesianLearning.pdf`
   - `GA.pdf`
+  - `Bayesian_Network_HW_EL.pdf`
+  - `1.BayesNet - Intro.pdf`
+  - `5.NaiveBayes.pdf`
 - **Book References**:
   - _Hands-On Machine Learning with Scikit-Learn, Keras, and TensorFlow_ by Aurélien Géron.
   - _Pattern Recognition and Machine Learning_ by Christopher M. Bishop.
   - _Machine Learning: A Probabilistic Perspective_ by Kevin P. Murphy.
   - _An Introduction to Genetic Algorithms_ by Melanie Mitchell.
   - _Genetic Algorithms in Search, Optimization, and Machine Learning_ by David E. Goldberg.
+  - _Probabilistic Graphical Models: Principles and Techniques_ by Daphne Koller and Nir Friedman.
+  - _Probabilistic Reasoning in Intelligent Systems_ by Judea Pearl.
 
 ---
 
