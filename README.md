@@ -48,6 +48,7 @@ This repository serves as a comprehensive **Machine Learning Hub**. Each topic c
 | **05** | [**Genetic Algorithms**](./GA/) | [`GA_Structure_Reproduction_Operators.ipynb`](./GA/GA_Structure_Reproduction_Operators.ipynb)<br>[`GA_Rule_Representation_Hyperparameter_Optimization.ipynb`](./GA/GA_Rule_Representation_Hyperparameter_Optimization.ipynb) | OneMax Bit-String ($L=20$, $p=50$)<br>Synthetic Rule Classification ($N=120$) | Roulette Wheel Selection, Single/Two-point/Uniform Crossover, Bit Mutation, GABIL Rule Induction, Modulo-8 Offset-Aligned Crossover | `Completed` |
 | **06** | [**Bayesian Networks**](./Bayesian_Network/) | [`Bayesian_Network_Inference.ipynb`](./Bayesian_Network/Bayesian_Network_Inference.ipynb)<br>[`Text_Classification_Naive_Bayes.ipynb`](./Bayesian_Network/Text_Classification_Naive_Bayes.ipynb) | Medical Pulmonary Diagnosis ($S, L, C, X$)<br>SMS Spam Collection (5,572 messages) | DAG Topology, Factorization, Variable Elimination, Belief Propagation, From-scratch Naive Bayes, Laplace Smoothing, 8 NLP Pipelines, LLR | `Completed` |
 | **07** | [**Support Vector Machines**](./SVM/) | [`Linear_vs_Nonlinear_SVM.ipynb`](./SVM/Linear_vs_Nonlinear_SVM.ipynb)<br>[`Study_SVM_Parameters.ipynb`](./SVM/Study_SVM_Parameters.ipynb) | Synthetic 2D ($N=500$)<br>Iris Binary ($N=100$)<br>Overlapping Blobs ($N=300$) | Maximum Margin, Primal/Dual, KKT Conditions, Kernel Trick, Margin Width ($2/\Vert\mathbf{w}\Vert_2$), Parameter Sweeps ($C, \gamma$), Hard vs. Soft Margin, `GridSearchCV` | `Completed` |
+| **08** | [**Ensemble Learning**](./Ensemble_Learning/) | [`Bagging_vs_Boosting.ipynb`](./Ensemble_Learning/Bagging_vs_Boosting.ipynb)<br>[`Investigating_Parameter_Effects.ipynb`](./Ensemble_Learning/Investigating_Parameter_Effects.ipynb) | Synthetic (Easy, Hard, Multi)<br>Breast Cancer<br>Digits | Bias-Variance Decomposition, `BaggingClassifier`, `AdaBoostClassifier`, `GradientBoostingClassifier`, Stacking, Hard/Soft Voting, Nested CV, MDI vs. Permutation | `Completed` |
 
 ---
 
@@ -248,6 +249,34 @@ This repository serves as a comprehensive **Machine Learning Hub**. Each topic c
 
 ---
 
+### Module 8 — Ensemble Learning
+
+<details open>
+<summary><b>Click to expand Module 8 details</b></summary>
+
+**Folder**: [`Ensemble_Learning/`](./Ensemble_Learning/) | **Specification**: [`Ensemble_HW_Programming_EL.pdf`](./Ensemble_Learning/Ensemble_HW_Programming_EL.pdf) | **Documentation**: [`README.md`](./Ensemble_Learning/README.md)
+
+- **Problem 1 — Comparing Bagging and Boosting on Synthetic and Real Data** ([`Bagging_vs_Boosting.ipynb`](./Ensemble_Learning/Bagging_vs_Boosting.ipynb))
+  - **5 Diverse Evaluation Datasets**: Evaluated 3 synthetic datasets (Easily Separable with $class\_sep=2.0$, Hard to Separate with label flip noise, and 3-Class Multiclass) and 2 real-world benchmarks (Breast Cancer Wisconsin Diagnostic, $N=569$; Optical Recognition of Handwritten Digits, $N=1,797$). Standardized via `StandardScaler` under a zero-leakage 70/30 stratified train/test split.
+  - **4 Model Architectures Benchmark**: Evaluated baseline CART `DecisionTreeClassifier` against `BaggingClassifier` (50 unpruned Decision Trees), `AdaBoostClassifier` (50 Decision Stumps), and `GradientBoostingClassifier` (50 shallow trees, $d=3$).
+  - **Benchmark Performance**: Bagging achieves peak accuracy on Synthetic Easily Separable (**98.00%**) and Synthetic Multiclass (**90.67%**); AdaBoost achieves peak performance on Breast Cancer (**95.91%** accuracy, **99.07%** recall); Gradient Boosting dominates complex high-dimensional multiclass Digits (**93.89%** accuracy).
+  - **Controlled Stress Testing (Noise & Imbalance)**: Under 20% training label noise, AdaBoost suffers severe degradation (dropping to **76.67%**) due to exponential weighting of corrupted samples ($w_i \propto e^{-y_i f}$), whereas Bagging demonstrates high resilience (**80.00%**) by uniform averaging. Under severe 90:10 class imbalance, Bagging achieves top minority-class F1-score (**62.07%**).
+  - **7 Embedded High-DPI Visualizations**: Figure 1 (EDA and feature topologies), Figure 2 (2D empirical decision boundaries and continuous probability contours), Figure 3 (Multi-metric performance and runtime dashboard), Figure 4 (Stress-testing diagnostics under noise and imbalance), Figure 5 (Empirical learning curves with $\pm 1\sigma$ variance bands), Figure 6 (Comparative feature attribution: MDI vs. Permutation Importance), and Figure 7 (Asymptotic ensemble scaling trajectories across $M \in [5, 200]$).
+  - **Best Metric**: Bagging achieves **98.00%** Test Accuracy on Synthetic Data; AdaBoost achieves **95.91%** Test Accuracy and **96.80%** F1-Score on Breast Cancer; Gradient Boosting achieves **93.89%** Test Accuracy on Digits.
+
+- **Problem 2 — Investigating Parameter Effects in Ensemble Methods** ([`Investigating_Parameter_Effects.ipynb`](./Ensemble_Learning/Investigating_Parameter_Effects.ipynb))
+  - **Estimator Capacity & Bias-Variance Decomposition**: Evaluated $M \in [10, 500]$ on Breast Cancer via 20-fold bootstrap simulation. Demonstrates monotonic variance decay in Bagging ($0.0110 \to 0.0067$, $39.1\%$ compression) without overfitting, whereas AdaBoost achieves peak performance at $M=50$ ($95.91\%$ accuracy) with ultra-low prediction variance ($0.0017$).
+  - **Cross-Topology Stress Testing**: Benchmarked 4 data contrasts: clean vs. noisy (20% label flip), outlier-free vs. 5% extreme covariate outliers, balanced vs. 90:10 imbalanced, and low-dim ($D=10$) vs. high-dim ($D=100$). Gradient Boosting dominates high dimensions ($91.33\%$ vs. $81.33\%$ for Random Forest), while Bagging exhibits top label noise resilience ($80.00\%$).
+  - **Stacking & Voting in Clinical Diagnosis**: Implemented Random Forest, AdaBoost, Gradient Boosting, Hard/Soft Voting, and Stacking on Breast Cancer Wisconsin. Stacking with $L_2$ Logistic Regression meta-learner achieves top discriminative capacity (**99.14%** ROC-AUC, **94.74%** accuracy), isolating `worst perimeter` and `worst concave points` as top clinical biomarkers via permutation importance.
+  - **Hyperparameter Interaction Surfaces**: Evaluated AdaBoost learning rate sensitivity ($lr \in [0.01, 2.0]$), Bagging 2D grid (`max_samples` $\times$ `max_features`), and Gradient Boosting grid (`learning_rate` $\times$ `max_depth`), mapping the critical stability transition points.
+  - **Pipeline Optimization with Nested Cross-Validation**: Established an atomic `Pipeline(StandardScaler, GradientBoosting)` evaluated via 5-fold outer / 3-fold inner nested CV. Achieves an unbiased generalization estimate ($94.73\% \pm 1.84\%$) matching held-out test performance ($94.15\%$) while reducing fold variance by $22.3\%$.
+  - **6 Embedded High-DPI Visualizations**: Figure 1 (Estimator capacity, bias-variance curves, and latency), Figure 2 (Cross-topology robustness dashboard), Figure 3 (Clinical metrics and multi-model ROC curves), Figure 4 (Stacking model permutation feature attribution), Figure 5 (Hyperparameter sensitivity curves and response heatmaps), and Figure 6 (Nested CV stability diagnostics).
+  - **Best Metric**: Stacking Classifier achieves **99.14%** ROC-AUC and **95.85%** F1-Score on Breast Cancer; Nested CV Pipeline achieves **94.73%** unbiased generalization accuracy with $\pm 1.84\%$ fold stability.
+
+</details>
+
+---
+
 ## Directory Structure
 
 ```text
@@ -297,6 +326,12 @@ Machine-Learning-Labs/
 │   ├── Linear_vs_Nonlinear_SVM.ipynb                               # Problem 1: Comparison of Linear and Non-linear SVM
 │   ├── Study_SVM_Parameters.ipynb                                  # Problem 2: Study on the Effect of SVM Parameters
 │   └── README.md                                                   # Support Vector Machines module documentation
+│
+├── Ensemble_Learning/
+│   ├── Ensemble_HW_Programming_EL.pdf                              # Problem specification
+│   ├── Bagging_vs_Boosting.ipynb                                   # Problem 1: Comparing Bagging and Boosting
+│   ├── Investigating_Parameter_Effects.ipynb                       # Problem 2: Parameter Effects, Stacking, Nested CV
+│   └── README.md                                                   # Ensemble Learning module documentation
 │
 ├── agents/
 │   └── rules.md                                                    # Working principles and development guidelines
@@ -361,6 +396,7 @@ jupyter notebook
   - `GA.pdf`
   - `Bayesian_Network_HW_EL.pdf`
   - `SVM_Lab.pdf`
+  - `Ensemble_HW_Programming_EL.pdf`
   - `1.BayesNet - Intro.pdf`
   - `5.NaiveBayes.pdf`
 - **Book References**:
@@ -373,6 +409,7 @@ jupyter notebook
   - _Probabilistic Reasoning in Intelligent Systems_ by Judea Pearl.
   - _Statistical Learning Theory_ by Vladimir N. Vapnik.
   - _Learning with Kernels_ by Bernhard Schölkopf and Alexander J. Smola.
+  - _The Elements of Statistical Learning_ by Trevor Hastie, Robert Tibshirani, and Jerome Friedman.
 
 ---
 
